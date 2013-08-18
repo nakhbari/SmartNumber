@@ -5,6 +5,9 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,11 +15,19 @@ import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
 public class MainActivity extends Activity {
-
+	Fragment newNumberFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		FragmentManager fm = getFragmentManager();
+		FragmentTransaction ft = fm.beginTransaction();
+		NewNumberFragment myFragment = new NewNumberFragment();
+		ft.add(R.id.myFragment, myFragment);
+		ft.commit();
+		
+		
 		setDropDownBar();
 	}
 
