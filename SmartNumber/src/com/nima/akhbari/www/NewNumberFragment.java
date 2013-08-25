@@ -20,7 +20,7 @@ public class NewNumberFragment extends Fragment {
 
 	Button bNewNumber;
 	EditText etNewNumber;
-	ActivityCommunicator numberHandler;
+	NewNumberHandle numberHandler;
 	Context context;
 	String phoneNumber;
 	
@@ -30,9 +30,9 @@ public class NewNumberFragment extends Fragment {
 		super.onAttach(activity);
 		context = getActivity();
 		try{
-			numberHandler = (ActivityCommunicator)context;
+			numberHandler = (NewNumberHandle)context;
 		}catch(ClassCastException e){
-			Log.i("Handler Exception", "The Activity "+ context.getClass().getSimpleName() + " does not implement ActivityCommunicator interface" );
+			Log.i("Handler Exception", "The Activity "+ context.getClass().getSimpleName() + " does not implement NewNumberHandle interface" );
 		}
 	}
 

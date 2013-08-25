@@ -1,6 +1,6 @@
 package com.nima.akhbari.www;
 
-public interface ActivityCommunicator {
+public interface NewNumberHandle {
 
 	public void passDataToActivity(String phoneNumber);
 

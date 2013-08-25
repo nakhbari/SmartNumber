@@ -16,24 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SpinnerAdapter;
 
-public class MainActivity extends Activity implements ActivityCommunicator {
+public class MainActivity extends Activity implements NewNumberHandle,
+		PhoneListHandle {
 	Fragment currentFragment;
+	public FragmentCommunicator fragmentCommunicator;
 	Button bNewNumber;
 	EditText etNewNumber;
 	public List<String> array = new ArrayList<String>();
+	public List<String> phoneList = new ArrayList<String>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
-		FragmentManager fm = getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		currentFragment = new NewNumberFragment();
-		ft.add(R.id.myFragment, currentFragment);
-
-		ft.commit();
-
 		setDropDownBar();
 	}
 
@@ -60,7 +55,34 @@ public class MainActivity extends Activity implements ActivityCommunicator {
 			public boolean onNavigationItemSelected(int position, long itemId) {
 				Log.d("Drop Down position", Integer.toString(position));
 				Log.d("Drop Down itemId", Long.toString(itemId));
-				array.add(Integer.toString(position));
+
+				FragmentManager fm = getFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+
+				if (position == 0) {
+					currentFragment = new NewNumberFragment();
+					ft.replace(R.id.myFragment, currentFragment);
+					ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					ft.addToBackStack(null);
+					ft.commit();
+				} else {
+					currentFragment = new PhoneListFragment();
+					ft.replace(R.id.myFragment, currentFragment);
+					ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+					ft.addToBackStack(null);
+					ft.commit();
+
+					phoneList.add("1-800-555-5555");
+					if (fragmentCommunicator != null) {
+
+						fragmentCommunicator.passDataToFragment(phoneList);
+					} else {
+
+						Log.d("fragmentCommunicator is null",
+								"fragmentCommunicator == null");
+					}
+				}
+
 				return true;
 
 			}
@@ -72,7 +94,22 @@ public class MainActivity extends Activity implements ActivityCommunicator {
 	@Override
 	public void passDataToActivity(String phoneNumber) {
 		// TODO Auto-generated method stub
-
+		if (!array.contains(phoneNumber)) {
+			array.add(phoneNumber);
+		}
 		Log.i("phoneNumber", "The Phone Number is " + phoneNumber);
+	}
+
+	@Override
+	public void passDataToActivity(boolean ready) {
+		// TODO Auto-generated method stub
+		if (fragmentCommunicator != null) {
+
+			fragmentCommunicator.passDataToFragment(phoneList);
+		} else {
+
+			Log.d("fragmentCommunicator is null",
+					"fragmentCommunicator == null");
+		}
 	}
 }
