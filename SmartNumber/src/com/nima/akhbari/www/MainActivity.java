@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,12 +25,19 @@ public class MainActivity extends Activity implements NewNumberHandle,
 	EditText etNewNumber;
 	public List<String> array = new ArrayList<String>();
 	public List<String> phoneList = new ArrayList<String>();
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		setDropDownBar();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
 	}
 
 	/**
@@ -98,6 +106,16 @@ public class MainActivity extends Activity implements NewNumberHandle,
 			array.add(phoneNumber);
 		}
 		Log.i("phoneNumber", "The Phone Number is " + phoneNumber);
+		//Open Database
+		PhoneListDatabase phoneListDatabase = new PhoneListDatabase(MainActivity.this);
+		SQLiteDatabase db = phoneListDatabase.getWritableDatabase();
+		
+		
+		
+		//Close Database
+		db.close();
+		phoneListDatabase.close();
+		
 	}
 
 	@Override
